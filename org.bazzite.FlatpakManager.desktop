@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Flatpak Manager Pro
+Comment=Beheer en verwijder Flatpaks in bulk
+Exec=flatpak-manager-start
+Icon=org.bazzite.FlatpakManager
+Categories=System;
+Terminal=false
