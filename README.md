@@ -1,64 +1,74 @@
-# Flatpak Manager Pro
+# Bazzite Flatpak Manager Pro 🚀
 
-A sleek, lightweight, and user-friendly bulk uninstaller for Flatpak applications, specifically optimized for Bazzite, Steam Deck (SteamOS), and other immutable or traditional Linux desktop environments. 
+Een krachtige, gestroomlijnde en gebruiksvriendelijke bulk-deïnstalleerder voor Flatpak-applicaties. Specifiek geoptimaliseerd voor Bazzite, Steam Deck (SteamOS) en andere immutable of traditionele Linux-desktopomgevingen. [3]
 
-Built using Python 3 and PyQt6, **Flatpak Manager Pro** automatically detects your system language (supporting Dutch and English) and allows you to thoroughly clean up multiple applications along with their leftover user data and unused runtimes in just a few clicks.
+Gebouwd met Python 3 en PyQt6. **Flatpak Manager Pro** detecteert automatisch je systeemtaal (ondersteunt Nederlands en Engels) en stelt je in staat om met een paar klikken grondig meerdere applicaties te verwijderen, inclusief alle bijbehorende verborgen gebruikersdata en ongebruikte runtimes. [3]
 
-## 🌟 Features
+## 🌟 Functionaliteiten
 
-* **Bulk Uninstallation:** Select multiple applications using checkboxes and remove them all at once.
-* **Thorough Cleanup:** Automatically deletes user configuration data (`--delete-data`) and prunes unused system runtimes (`--unused`) to free up valuable SSD space.
-* **Environment Detection:** Clearly distinguishes between **🖥️ SYSTEM** (full PC) and **👤 USER** (isolated user profile) installations.
-* **Automatic Localization:** Automatically switches interface language between English and Dutch based on your system's locale settings.
-* **Flathub Ready:** Sandboxed configuration utilizing secure host-spawning mechanisms to communicate safely with your native package manager.
+*   **Bulk-deïnstalleerder:** Selecteer meerdere applicaties tegelijk via handige selectievakjes om ze in één keer te wissen. [3]
+*   **Grondige Opschoning:** Verwijdert automatisch alle configuratie- en cachebestanden (`--delete-data`) en schoont ongebruikte systeembasissen op (`--unused`) om kostbare SSD-ruimte vrij te maken. [3]
+*   **Geavanceerde Metadata (Discover-stijl):** Klap een applicatie live uit om direct de schijfgrootte van de gebruikersdata, branch-informatie, architectuur, herkomst en de exacte commit-hashes te bekijken.
+*   **Omgevingsdetectie:** Maakt een helder visueel onderscheid tussen **🖥️ SYSTEM** (volledige pc) en **👤 USER** (geïsoleerd gebruikersprofiel) installaties. [3]
+*   **Automatische Systeemtaal:** De interface schakelt automatisch tussen Engels en Nederlands op basis van de actieve landinstellingen van je computer. [3]
 
 ## 📸 Screenshots
 
-*(To add a screenshot, upload an image named `screenshot.png` to your repository and uncomment the line below)*
+*(Om een screenshot toe te voegen, upload een afbeelding genaamd `screenshot.png` naar je repository en haal de commentaartekens hieronder weg)* [3]
 <!-- ![Flatpak Manager Pro Interface](screenshot.png) -->
 
-## 🔧 Installation & Build Instructions
+## 🔧 Installatie & Bouwinstructies
 
-Since Flatpak Manager Pro is built as a native Flatpak application, you can easily build and install it locally using `flatpak-builder`.
+Omdat Bazzite Flatpak Manager Pro is gebouwd als een native Flatpak-applicatie, kun je deze eenvoudig lokaal compileren en installeren met `flatpak-builder`. [3]
 
-### Prerequisites
+### Benodigdheden
 
-Ensure you have `flatpak` and `flatpak-builder` installed on your Linux distribution. On Bazzite or SteamOS, these are included out of the box.
+Zorg ervoor dat `flatpak` en `flatpak-builder` aanwezig zijn op je Linux-distributie. Op Bazzite en SteamOS is dit standaard al out-of-the-box geïnstalleerd. [3]
 
-### Building from Source
+### Optie 1: Compileren vanaf de Broncode (Ontwikkelaars)
 
-1. Clone this repository to your desktop or project directory:
-   ```bash
-   cd ~/Desktop
-   git clone https://github.com
-   cd Flatpak-Uninstaller
-   ```
+1.  Kloon deze repository naar je bureaublad of projectmap: [3]
+    ```bash
+    cd ~/Desktop
+    git clone https://github.com
+    cd flatpak-manager-pro
+    ```
+2.  Wis eventuele oude bouwcaches voor een gegarandeerd schone start: [3]
+    ```bash
+    rm -rf build-dir .flatpak-builder local-repo
+    ```
+3.  Bouw en installeer de applicatie lokaal binnen je gebruikersprofiel: [3]
+    ```bash
+    flatpak run org.flatpak.Builder --user --install --force-clean build-dir org.bazzite.FlatpakManager.json
+    ```
+4.  Registreer de snelkoppeling en ververs je startmenu (KDE Plasma 6) om het ronde logo direct live te activeren: [3]
+    ```bash
+    mkdir -p ~/.local/share/applications
+    cp /var/lib/flatpak/app/org.bazzite.FlatpakManager/current/active/export/share/applications/org.bazzite.FlatpakManager.desktop ~/.local/share/applications/ 2>/dev/null || cp ~/.local/share/flatpak/app/org.bazzite.FlatpakManager/current/active/export/share/applications/org.bazzite.FlatpakManager.desktop ~/.local/share/applications/ 2>/dev/null
+    
+    rm -rf ~/.cache/icoon-cache ~/.cache/icon-cache.kcache
+    kbuildsycoca6 --noincremental
+    kquitapp6 plasmashell && kstart6 plasmashell
+    ```
 
-2. Clear out any previous build caches to ensure a clean slate:
-   ```bash
-   rm -rf build-dir .flatpak-builder local-repo
-   ```
+### Optie 2: Installeren via het Universele `.flatpak` Bestand (Gebruikers)
 
-3. Build and install the application locally into your user profile:
-   ```bash
-   flatpak run org.flatpak.Builder --user --install --force-clean build-dir org.bazzite.FlatpakManager.json
-   ```
+Als je de app als kant-and-klaar pakket hebt gedownload van de GitHub Releases-pagina, kun je de standalone installer direct uitvoeren en installeren in Discover:
 
-4. *(Optional)* Refresh your desktop shell (KDE Plasma) to force the new round icon to display immediately in your application menu:
-   ```bash
-   kquitapp5 plasmashell && kstart5 plasmashell
-   ```
+```bash
+flatpak install --user BazziteFlatpakManagerPro.flatpak
+```
 
-## 🛠️ Sandbox Permissions Explained
+## 🛠️ Sandbox-rechten Toegelicht
 
-This application runs securely inside a Flatpak sandbox but safely bypasses it for package management via the following defined parameters inside the manifest:
-* `--filesystem=host`: Required to accurately scan system configurations.
-* `flatpak-spawn --host`: Used internally to safely execute native CLI tasks (`flatpak list` and `flatpak uninstall`) on the host system without compromising absolute desktop security.
+Deze applicatie draait veilig binnen een Flatpak-sandbox, maar communiceert op een verantwoorde manier met het basissysteem voor pakketbeheer via de volgende parameters in het manifest: [3]
+*   `--filesystem=host`: Vereist om de gebruikersmappen accuraat te scannen op schijfgrootte. [3]
+*   `flatpak-spawn --host`: Wordt intern gebruikt om de native CLI-taken (`flatpak list` en `flatpak uninstall`) veilig op de host uit te voeren zonder de algehele desktopbeveiliging in gevaar te brengen. [3]
 
-## 📄 License
+## 📄 Licentie
 
-This project is licensed under the GPL-3.0 License - see the source files for full copyright details.
+Dit project is gelicentieerd onder de GPL-3.0 Licentie - zie de broncodebestanden voor volledige auteursrechtelijke details. [3]
 
-## 👤 Author
+## 👤 Auteur
 
-Developed with ❤️ by [LionheartTim](https://github.com). Feel free to submit an issue or pull request if you want to contribute to future feature releases!
+Ontwikkeld met ❤️ door [LionheartTim](https://github.com). Voel je vrij om een issue of pull-request in te dienen als je wilt bijdragen aan toekomstige functionaliteiten! [3]
